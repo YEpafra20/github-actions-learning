@@ -1,0 +1,16 @@
+name: Conditional Execution
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  custom-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy (main only)
+        if: github.ref == 'refs/heads/main'
+        run: echo "Deploying to production..."
