@@ -86,7 +86,7 @@ jobs:
           echo "✅ All tests completed"
 
   # 🔹 Task 8: New job to download artifact
-      download-artifact:
+  download-artifact:
     name: Download Artifact
     runs-on: ubuntu-latest
     needs: build-and-test   # 👈 ensures this runs after build-and-test finishes
