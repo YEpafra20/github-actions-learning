@@ -35,6 +35,8 @@ jobs:
       - name: Print success message
         run: echo "✅ Workflow completed successfully!"
       
-      # 👇 Task 6: Access GitHub Secret
+      # 👇 Task 6: Access GitHub Secret (fixed syntax)
       - name: Access secret
-        run: echo "Secret length: ${#{{ secrets.TEST_SECRET }}}"
+        run: |
+          echo "Secret value is masked: ${{ secrets.TEST_SECRET }}"
+          echo "Secret length: $(echo -n "${{ secrets.TEST_SECRET }}" | wc -c)"
