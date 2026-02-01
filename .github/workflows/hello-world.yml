@@ -34,3 +34,7 @@ jobs:
       
       - name: Print success message
         run: echo "✅ Workflow completed successfully!"
+      
+      # 👇 Task 6: Access GitHub Secret
+      - name: Access secret
+        run: echo "Secret length: ${#{{ secrets.TEST_SECRET }}}"
