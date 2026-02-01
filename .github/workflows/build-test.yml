@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop]   # 👈 Make sure you push to one of these
     paths:
       - 'sample-app/**'
       - '.github/workflows/build-test.yml'
@@ -17,7 +17,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]   # 👈 Task 7: matrix with 3 versions
+        node-version: [16.x, 18.x, 20.x]   # 👈 Task 7: 3 versions
     
     env:                                   # 👈 Task 5: environment variables
       NODE_ENV: test
@@ -55,55 +55,3 @@ jobs:
         run: |
           echo "Environment: ${{ env.NODE_ENV }}"
           echo "Log Level: ${{ env.LOG_LEVEL }}"
-      
-      - name: Upload coverage reports
-        if: matrix.node-version == '18.x'
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report-${{ matrix.node-version }}
-          path: sample-app/coverage/
-          retention-days: 30
-      
-      - name: Check coverage
-        if: always()
-        working-directory: ./sample-app
-        run: |
-          if [ -f coverage/coverage-summary.json ]; then
-            echo "✅ Coverage report generated"
-          else
-            echo "⚠️ No coverage report found"
-          fi
-
-  lint-check:
-    name: Lint Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'sample-app/package-lock.json'
-      
-      - working-directory: ./sample-app
-        run: npm ci
-      
-      - name: Run ESLint
-        working-directory: ./sample-app
-        run: npm run lint
-        continue-on-error: true
-
-  test-summary:
-    name: Test Summary
-    runs-on: ubuntu-latest
-    needs: [build-and-test]
-    if: always()
-    
-    steps:
-      - name: Print test results
-        run: |
-          echo "🎯 Test Run Summary"
-          echo "==================="
-          echo "✅ All tests completed"
