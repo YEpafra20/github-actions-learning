@@ -42,14 +42,17 @@ jobs:
       
       - name: Dummy test step
         run: echo "✅ Tests simulated"
-      
-      - name: Upload coverage reports
-        if: matrix.node-version == '18.x'
+
+      # 🔹 Task 8: Create and upload artifact
+      - name: Create artifact
+        run: echo "Build output for Node ${{ matrix.node-version }}" > output.txt
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-${{ matrix.node-version }}
-          path: sample-app/
-          retention-days: 30
+          name: build-output-${{ matrix.node-version }}
+          path: output.txt
+          retention-days: 7
       
       - name: Check coverage
         if: always()
@@ -81,3 +84,18 @@ jobs:
           echo "🎯 Test Run Summary"
           echo "==================="
           echo "✅ All tests completed"
+
+  # 🔹 Task 8: New job to download artifact
+      download-artifact:
+    name: Download Artifact
+    runs-on: ubuntu-latest
+    needs: build-and-test   # 👈 ensures this runs after build-and-test finishes
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output-18.x   # 👈 choose which artifact to download (example: from Node 18.x job)
+          path: ./downloaded
+
+      - name: Show artifact content
+        run: cat ./downloaded/output.txt
