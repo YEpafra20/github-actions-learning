@@ -31,11 +31,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'   # ✅ keep cache, but no dependency path
       
       - name: Install dependencies
         working-directory: ./sample-app
-        run: npm ci || npm install   # ✅ fallback if no lock file
+        run: npm install   # ✅ use install since no lock file
       
       - name: Run linter
         working-directory: ./sample-app
@@ -82,10 +81,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
       
       - working-directory: ./sample-app
-        run: npm ci || npm install
+        run: npm install
       
       - name: Run ESLint
         working-directory: ./sample-app
