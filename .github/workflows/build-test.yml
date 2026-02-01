@@ -17,8 +17,12 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [16.x, 18.x, 20.x]   # 👈 Task 7: matrix with 3 versions
     
+    env:                                   # 👈 Task 5: environment variables
+      NODE_ENV: test
+      LOG_LEVEL: debug
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -46,6 +50,11 @@ jobs:
       - name: Run tests
         working-directory: ./sample-app
         run: npm test
+      
+      - name: Print environment            # 👈 Task 5 proof step
+        run: |
+          echo "Environment: ${{ env.NODE_ENV }}"
+          echo "Log Level: ${{ env.LOG_LEVEL }}"
       
       - name: Upload coverage reports
         if: matrix.node-version == '18.x'
@@ -98,15 +107,3 @@ jobs:
           echo "🎯 Test Run Summary"
           echo "==================="
           echo "✅ All tests completed"
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
-      LOG_LEVEL: debug
-    steps:
-      - uses: actions/checkout@v3
-      - name: Print environment
-        run: |
-          echo "Environment: ${{ env.NODE_ENV }}"
-          echo "Log Level: ${{ env.LOG_LEVEL }}"
