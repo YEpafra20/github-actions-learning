@@ -98,3 +98,15 @@ jobs:
           echo "🎯 Test Run Summary"
           echo "==================="
           echo "✅ All tests completed"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      LOG_LEVEL: debug
+    steps:
+      - uses: actions/checkout@v3
+      - name: Print environment
+        run: |
+          echo "Environment: ${{ env.NODE_ENV }}"
+          echo "Log Level: ${{ env.LOG_LEVEL }}"
